@@ -2,7 +2,7 @@
   <div style="width: 250px" class="flex flex-col h-screen">
     <div class="px-4 mt-3 mb-5">
       <div>
-        NanoVault
+        Nank
       </div>
 
       <div class="mt-4">

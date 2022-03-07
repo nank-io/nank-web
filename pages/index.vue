@@ -3,7 +3,7 @@
     <div class="text-center">
       <div class="py-20">
         <div class="text-3xl">
-          Welcome to NanoVault!
+          Welcome to Nank!
         </div>
         <div class="text-xl mt-5">
           The "no strings attached" open source wallet for Nano
