@@ -10,10 +10,18 @@
 
       <div
         class="w-full flex"
-        v-if="activePanel === 2"
+        v-if="[2, 6].includes(activePanel)"
       >
-        <div class="w-1/2 text-center p-4 text-white bg-blue-500">Create new Wallet</div>
-        <div class="w-1/2 text-center p-4 text-white bg-black">Import existing wallet</div>
+        <div
+          class="w-1/2 text-center p-4 text-white bg-black"
+          :class="{ 'bg-blue-500': activeTab === 1 }"
+          @click="handleActiveTab(1)"
+        >Create new Wallet</div>
+        <div
+          class="w-1/2 text-center p-4 text-white bg-black"
+          :class="{ 'bg-blue-500': activeTab === 2 }"
+          @click="handleActiveTab(2)"
+        >Import existing wallet</div>
       </div>
 
       <div
@@ -27,10 +35,10 @@
             Make sure you back up your seed, write it down, and keep it incredibly safe! There is NO way to recover it after creation, and all funds inside WILL be lost without it! You have been warned!
           </div>
         </div>
-        <div class="px-10 py-4 border-t bg-white">
+        <div class="px-10 py-4 border-t bg-white flex justify-end">
           <div
             @click="createNewWallet"
-            class="inline-block ml-auto p-4 bg-blue-500 text-white text-center"
+            class="inline-block p-4 bg-blue-500 text-white text-center"
           >
             Create Wallet
           </div>
@@ -86,10 +94,10 @@
             </div>
           </div>
         </div>
-        <div class="px-10 py-4 border-t bg-white">
+        <div class="px-10 py-4 border-t bg-white flex justify-start">
           <div
             @click="confirmNewSeed"
-            class="inline-block mr-auto p-4 bg-red-500 text-white text-center"
+            class="inline-block p-4 bg-red-500 text-white text-center"
           >
             I've saved my seed/mnemonic
           </div>
@@ -114,14 +122,14 @@
           <div
             class="flex justify-between"
           >
-            <input v-model="walletPasswordConfirmModel" type="text" class="w-1/2" placeholder="New wallet password">
-            <input v-model="walletPasswordModel" type="text" class="w-1/2" placeholder="Confirm wallet password">
+            <input v-model="walletPasswordConfirmModel" type="text" class="w-1/2 p-2 border" placeholder="New wallet password">
+            <input v-model="walletPasswordModel" type="text" class="w-1/2 p-2 border" placeholder="Confirm wallet password">
           </div>
         </div>
-        <div class="px-10 py-4 border-t bg-white">
+        <div class="px-10 py-4 border-t bg-white flex justify-start">
           <div
             @click="saveWalletPassword"
-            class="inline-block mr-auto p-4 bg-blue-500 text-white text-center"
+            class="inline-block p-4 bg-blue-500 text-white text-center"
           >
             Set wallet password
           </div>
@@ -141,13 +149,64 @@
             Your wallet has been configured and you are ready to send and receive Nano!
           </div>
         </div>
-        <div class="px-10 py-4 border-t bg-white">
+        <div class="px-10 py-4 border-t bg-white flex justify-start">
           <nuxt-link
             to="/accounts"
-            class="inline-block mr-auto p-4 bg-blue-500 text-white text-center"
+            class="inline-block p-4 bg-blue-500 text-white text-center"
           >
             View accounts
           </nuxt-link>
+        </div>
+      </div>
+
+      <!-- Tab panel 2 - import -->
+      <div
+        v-if="activePanel === 6"
+      >
+        <div class="px-10 py-4 border-b bg-white">
+          <div>
+            If you already have a Nano wallet, you can import it below. When you import a wallet, none of your existing wallets or accounts are affected, and your seed is not stored anywhere besides in your local client. Use the drop down below to select which type of import you want to use.
+          </div>
+        </div>
+        <div class="p-10 bg-white">
+          <div
+            class="flex justify-between"
+          >
+            <label class="flex">
+              <div class="mr-4">Select Import Type</div>
+              <select v-model="imporType">
+                <option selected value="seed">Nano Seed</option>
+                <option value="mnemonic">Nano Mnemonic Phrase</option>
+              </select>
+            </label>
+          </div>
+
+          <div v-if="imporType === 'seed'">
+            <div>Enter your 64 or 128 character seed from any Nano wallet to import it below.</div>
+            <input type="text" placeholder="Your nano backup seed" v-model="seed">
+          </div>
+
+          <div v-else-if="imporType === 'mnemonic'">
+            <div>Enter your wallet mnemonic phrase generated from any Nano wallet to import it below.</div>
+            <textarea placeholder="Your nano backup mnemonic phrase" v-model="mnemonic">
+            </textarea>
+          </div>
+        </div>
+        <div class="px-10 py-4 border-t bg-white flex justify-end">
+          <div
+            class="inline-block p-4 bg-blue-500 text-white text-center"
+            v-if="imporType === 'seed'"
+            @click="handleImportWallet"
+          >
+            Import from seed
+          </div>
+          <div
+            class="inline-block p-4 bg-blue-500 text-white text-center"
+            v-else-if="imporType === 'mnemonic'"
+            @click="handleImportWallet"
+          >
+            Import from mnemonic phrase
+          </div>
         </div>
       </div>
 
@@ -163,24 +222,39 @@
 
 <script>
 import * as nanocurrency from 'nanocurrency-web'
-import * as CryptoJS from 'crypto-js'
+
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ConfigureWalletPage',
   data() {
     return {
+      activeTab: 1,
       activePanel: 2,
+      imporType: '',
       seed: '',
+      mnemonic: '',
       newWalletMnemonicLines: [],
       walletPasswordConfirmModel: '',
       walletPasswordModel: '',
     }
   },
+  mounted() {
+    if (this.$route.query.import === '1') {
+      this.activeTab = 2
+      this.activePanel = 6
+    } else {
+      this.activeTab = 1
+    }
+  },
+  computed: {
+    ...mapGetters({
+      walletIsConfigured: 'wallet/isConfigured'
+    })
+  },
   methods: {
     createNewWallet() {
       const wallet = nanocurrency.wallet.generate()
-
-      console.log(wallet)
       
       const words = wallet.mnemonic.split(' ');
 
@@ -214,13 +288,37 @@ export default {
         return alert(`Password cannot be empty!`);
       }
 
-      const encryptedSeed = CryptoJS.AES.encrypt(this.seed, this.walletPasswordModel || '');
-
-      this.wallet.seed = encryptedSeed.toString();
-
-      localStorage.setItem('wallet', JSON.stringify(this.wallet));
-
+      this.$store.dispatch('wallet/lockWallet', {
+        wallet: this.wallet,
+        password: this.walletPasswordModel
+      })
+      
       this.activePanel = 5
+    },
+
+    handleActiveTab(tab) {
+      this.activeTab = tab
+      
+      if (this.activeTab === 1) {
+        this.activePanel = 2
+      } else if (this.activeTab === 2) {
+        this.activePanel = 6
+      }
+    },
+
+    handleImportWallet() {
+      let wallet
+      
+      if (this.imporType === 'seed') {
+        wallet = nanocurrency.wallet.fromSeed(this.seed)
+      } else if (this.imporType === 'mnemonic') {
+        wallet = nanocurrency.wallet.fromMnemonic(this.mnemonic)
+      }
+
+      this.wallet = { ...wallet }
+      this.$store.dispatch('wallet/setCurrentWallet', { wallet })
+      
+      this.activePanel = 4
     }
   }
 }
