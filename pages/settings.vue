@@ -19,10 +19,13 @@
           >
             <label class="flex">
               <div>Server Configuration</div>
-              <!-- <select
-                v-for=""
+              <select
+                v-for="server in servers"
+                :key="server.id"
+                @change="handleChangeServer"
               >
-              </select> -->
+                <option :value="server.id">{{ server.name }}</option>
+              </select>
             </label>
           </div>
         </div>
@@ -46,6 +49,7 @@ export default {
   name: 'SettingsPage',
   computed: {
     ...mapGetters({
+      servers: 'servers'
     })
   },
   methods: {
@@ -56,6 +60,9 @@ export default {
           accounts: [],
         }
       })
+    },
+    handleChangeServer(event) {
+      console.log(event.target.value)
     }
   }
 }

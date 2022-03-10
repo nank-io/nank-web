@@ -1,4 +1,5 @@
 import * as CryptoJS from 'crypto-js'
+import { getAccountsBalances } from '~/services/proxy-rpc'
 
 const defaultCurrentWallet = {
   accounts: []
@@ -50,6 +51,23 @@ export const actions = {
 
     commit('setCurrentWallet', wallet)
   },
+  loadCurrentAccountsBalance({ commit, getters, rootGetters }) {
+    getAccountsBalances(
+      rootGetters.currentServer.api,
+      getters.currentAccounts.map(acc => acc.address).filter(Boolean)
+    ).then(json => {
+      const accountsUpdated = getters.currentAccounts.map(acc => {
+        acc.balance = json.balances[acc.address].balance
+        return acc
+      })
+      commit('setCurrentWallet', {
+        ...getters.currentWallet,
+        accounts: accountsUpdated
+      })
+    }).catch(error => {
+      console.log(error)
+    })
+  }
 }
 
 export const getters = {
@@ -57,6 +75,9 @@ export const getters = {
     return {
       ...state.currentWallet
     }
+  },
+  currentAccounts(state, getters) {
+    return getters.currentWallet.accounts
   },
   isConfigured(state) {
     return !!state.currentWallet.seed

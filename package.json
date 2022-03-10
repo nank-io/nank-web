@@ -11,6 +11,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/pwa": "^3.3.5",
+    "bip39": "^3.0.4",
     "core-js": "^3.19.3",
     "crypto-js": "^4.1.1",
     "nanocurrency-web": "^1.3.6",

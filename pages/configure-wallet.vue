@@ -222,6 +222,7 @@
 
 <script>
 import * as nanocurrency from 'nanocurrency-web'
+import * as bip from 'bip39'
 
 import { mapGetters } from 'vuex'
 
@@ -293,6 +294,8 @@ export default {
         password: this.walletPasswordModel
       })
       
+      this.$store.dispatch('wallet/loadCurrentAccountsBalance')
+      
       this.activePanel = 5
     },
 
@@ -312,11 +315,12 @@ export default {
       if (this.imporType === 'seed') {
         wallet = nanocurrency.wallet.fromSeed(this.seed)
       } else if (this.imporType === 'mnemonic') {
-        wallet = nanocurrency.wallet.fromMnemonic(this.mnemonic)
+        wallet = nanocurrency.wallet.fromLegacyMnemonic(this.mnemonic)
       }
 
       this.wallet = { ...wallet }
       this.$store.dispatch('wallet/setCurrentWallet', { wallet })
+      this.$store.dispatch('wallet/loadCurrentAccountsBalance')
       
       this.activePanel = 4
     }
