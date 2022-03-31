@@ -2,9 +2,9 @@
   <div
     class="flex"
   >
-    <div class="w-12">{{ account.accountIndex }}</div>
-    <div class="w-1/2">{{ account.address }}</div>
-    <div class="w-1/2">{{ account.balance }}</div>
+    <div class="w-12  px-2">{{ account.accountIndex }}</div>
+    <div class="w-1/2 px-2">{{ account.address }}</div>
+    <div class="w-1/2 px-2">{{ account.balance }}</div>
   </div>
 </template>
 

@@ -255,7 +255,7 @@ export default {
   },
   methods: {
     createNewWallet() {
-      const wallet = nanocurrency.wallet.generate()
+      const wallet = nanocurrency.wallet.generateLegacy()
       
       const words = wallet.mnemonic.split(' ');
 
@@ -294,7 +294,7 @@ export default {
         password: this.walletPasswordModel
       })
       
-      this.$store.dispatch('wallet/loadCurrentAccountsBalance')
+      this.$store.dispatch('wallet/loadCurrentWalletAccountsBalance')
       
       this.activePanel = 5
     },
@@ -313,14 +313,14 @@ export default {
       let wallet
       
       if (this.imporType === 'seed') {
-        wallet = nanocurrency.wallet.fromSeed(this.seed)
+        wallet = nanocurrency.wallet.fromLegacySeed(this.seed)
       } else if (this.imporType === 'mnemonic') {
         wallet = nanocurrency.wallet.fromLegacyMnemonic(this.mnemonic)
       }
 
       this.wallet = { ...wallet }
       this.$store.dispatch('wallet/setCurrentWallet', { wallet })
-      this.$store.dispatch('wallet/loadCurrentAccountsBalance')
+      this.$store.dispatch('wallet/loadCurrentWalletAccountsBalance')
       
       this.activePanel = 4
     }

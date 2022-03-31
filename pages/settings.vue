@@ -20,11 +20,13 @@
             <label class="flex">
               <div>Server Configuration</div>
               <select
-                v-for="server in servers"
-                :key="server.id"
                 @change="handleChangeServer"
               >
-                <option :value="server.id">{{ server.name }}</option>
+                <option 
+                  v-for="server in servers"
+                  :key="server.id"
+                  :value="server.id"
+                >{{ server.name }}</option>
               </select>
             </label>
           </div>
@@ -62,7 +64,11 @@ export default {
       })
     },
     handleChangeServer(event) {
-      console.log(event.target.value)
+      const server = this.servers.find(
+        server => server.id == event.target.value
+      )
+
+      this.$store.dispatch('setCurrentServer', server)
     }
   }
 }

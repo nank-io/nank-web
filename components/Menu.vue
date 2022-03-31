@@ -15,7 +15,7 @@
           </div>
         </div>
         <div>
-          0.00000 NANO
+          {{ currentWallet.balance }}
         </div>
       </div>
     </div>
@@ -42,7 +42,12 @@
         <li class="my-2">
           <nuxt-link to="/accounts">Accounts</nuxt-link>
         </li>
-        <li class="my-2">Send</li>
+        <li class="my-2">
+          <nuxt-link to="/receive">Receive</nuxt-link>
+        </li>
+        <li class="my-2">
+          <nuxt-link to="/send">Send</nuxt-link>
+        </li>
         <!-- <li class="my-2">Address Book</li> -->
         <li class="my-2">
           <nuxt-link to="/settings">Settings</nuxt-link>

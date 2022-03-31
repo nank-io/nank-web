@@ -18,13 +18,13 @@
         <div class="w-1/2 px-2">Balance</div>
       </div>
       <div
-        v-for="account in currentAccounts"
+        v-for="account in currentWalletAccounts"
         :key="account.address"
       >
         <Account :account="account" />
       </div>
       <div
-        v-if="!currentAccounts.length"
+        v-if="!currentWalletAccounts.length"
         class="text-center p-5 bg-gray-100"
       >
         You don't have any accounts yet, <nuxt-link class="text-blue-500 underline" to="/configure-wallet">click here to create one</nuxt-link>
@@ -39,11 +39,11 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'AccountsPage',
   mounted() {
-    this.$store.dispatch('wallet/loadCurrentAccountsBalance')
+    this.$store.dispatch('wallet/loadCurrentWalletAccountsBalance')
   },
   computed: {
     ...mapGetters({
-      currentAccounts: 'wallet/currentAccounts',
+      currentWalletAccounts: 'wallet/currentWalletAccounts',
     })
   },
   methods: {
