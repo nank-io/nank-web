@@ -4,13 +4,12 @@
       fixed w-full top-14 pr-10
       transform transition-transform
       overflow-hidden
-      bg-black bg-opacity-20
       ${menuOpened ? 'translate-x-0' : '-translate-x-full'}
     `"
     @click="onClick"
   >
     <div
-      class="flex flex-col pt-2 w-full sm:max-w-sm h-screen bg-gray-100 dark:bg-gray-800"
+      class="flex flex-col py-4 px-5 w-full sm:max-w-sm h-screen bg-gray-100 dark:bg-gray-800 shadow-2xl"
     >
       <!-- <div class="px-4 mt-3 mb-5">
         <div>
@@ -32,7 +31,7 @@
         </div>
       </div> -->
 
-      <div class="py-4 px-5">
+      <div class="pt-4">
         <div class="p-1 bg-gray-200 dark:bg-gray-700 rounded-lg">
           <div class="p-3 dark:text-white border border-dashed border-gray-600 rounded-lg">
             <div class="text-xl">Total Balance</div>
@@ -70,9 +69,7 @@
         </div>
       </div>
 
-
-
-      <div class="px-4 py-2 bg-gray-600 text-white flex-1">
+      <div class="pt-4 bg-gray-100 dark:bg-gray-800 dark:text-white flex-1">
         <ul class="list-none">
           <li class="my-2">
             <nuxt-link to="/accounts">Accounts</nuxt-link>
