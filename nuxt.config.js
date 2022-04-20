@@ -1,8 +1,10 @@
+import i18n from "./I18n";
+
 export default {
   server: {
     port: 4000,
   },
-  
+
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
@@ -29,7 +31,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '@plugins/modal'
+    '@plugins/modal',
+    '@plugins/darkMode',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -47,6 +50,8 @@ export default {
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    // https://i18n.nuxtjs.org/setup
+    '@nuxtjs/i18n',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -61,6 +66,8 @@ export default {
       lang: 'en'
     }
   },
+
+  i18n,
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

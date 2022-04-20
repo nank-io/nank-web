@@ -26,7 +26,8 @@ export const state = () => {
 
   return {
     servers: DEFAULT_SERVERS,
-    currentServer: currentServer
+    currentServer: currentServer,
+    menuOpened: false
   }
 }
 
@@ -35,6 +36,9 @@ export const mutations = {
     state.currentServer = server
 
     localStorage.setItem('currentServer', JSON.stringify(server))
+  },
+  setMenuOpened(state, isOpen) {
+    state.menuOpened = isOpen
   }
 }
 
@@ -50,5 +54,8 @@ export const getters = {
   },
   currentServer(state) {
     return {...state.currentServer}
+  },
+  menuOpened(state) {
+    return state.menuOpened
   }
 }

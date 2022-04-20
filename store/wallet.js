@@ -41,6 +41,7 @@ export const actions = {
   setCurrentWallet({ commit }, { wallet }) {
     commit('setCurrentWallet', wallet)
   },
+
   lockWallet({ commit }, { wallet, password }) {
     const encryptedSeed = CryptoJS.AES.encrypt(wallet.seed, password || '');
 
@@ -50,6 +51,7 @@ export const actions = {
 
     commit('setCurrentWallet', wallet)
   },
+
   unlockWallet({ commit }, { wallet, password }) {
     const decryptedBytes = CryptoJS.AES.decrypt(wallet.seed, password);
     const decryptedSeed = decryptedBytes.toString(CryptoJS.enc.Utf8);
@@ -65,6 +67,7 @@ export const actions = {
 
     commit('setCurrentWallet', wallet)
   },
+  
   loadCurrentWalletAccountsBalance({ commit, getters, rootGetters }) {
     getAccountsBalances(
       rootGetters.currentServer.api,
@@ -85,6 +88,7 @@ export const actions = {
       console.log(error)
     })
   },
+
   loadCurrentWalletAccountsPending({ commit, dispatch, getters, rootGetters }) {
     getAccountsPending(
       rootGetters.currentServer.api,
@@ -118,6 +122,7 @@ export const actions = {
       console.log(error)
     })
   },
+  
   loadAccountsFrontiers({ commit, getters, rootGetters }, { accounts }) {
     getAccountsFrontiers(
       rootGetters.currentServer.api,
@@ -185,6 +190,8 @@ export const actions = {
     })
   },
   generateReceive({ dispatch, rootGetters, getters }, { account, block: sourceBlock }) {
+    console.log(account, sourceBlock)
+
     if (getters.isLocked) {
       return alert('Wallet locked')
     }
@@ -195,11 +202,18 @@ export const actions = {
       rootGetters.currentServer.api,
       account,
     ).then(accountInfo => {
+      
+      if (Boolean(accountInfo.error)) {
+        return alert(accountInfo.error)
+      }
+
       getBlocksInfo(
         rootGetters.currentServer.api,
         [sourceBlock]
       ).then(json => {
         const blockInfo = json.blocks[sourceBlock]
+
+        console.log(accountInfo)
         
         doWorkGenerate(
           rootGetters.currentServer.api,

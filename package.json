@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
+    "@nuxtjs/i18n": "^7.2.1",
     "@nuxtjs/pwa": "^3.3.5",
     "bignumber.js": "^9.0.2",
     "bip39": "^3.0.4",
