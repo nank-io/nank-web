@@ -1,7 +1,6 @@
 <template>
   <div class="flex">
     <Menu />
-
     <Nuxt/>
   </div>
 </template>
