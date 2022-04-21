@@ -1,6 +1,6 @@
 import en from './en'
 import es from './es'
-import ptBR from './pt-BR'
+import ptBR from './ptBr'
 
 export const locales = [
   {
@@ -12,7 +12,7 @@ export const locales = [
     name: 'Español'
   },
   {
-    code: 'pt-BR',
+    code: 'pt',
     name: 'Português'
   },
 ]
@@ -20,15 +20,15 @@ export const locales = [
 export const messages = {
   en,
   es,
-  'pt-BR': ptBR
+  pt: ptBR
 }
 
 export default {
   locales,
-  defaultLocale: 'pt-BR',
+  defaultLocale: 'pt',
   strategy: 'no_prefix',
   vueI18n: {
-    fallbackLocale: 'pt-BR',
+    fallbackLocale: 'pt',
     messages
   }
 }
