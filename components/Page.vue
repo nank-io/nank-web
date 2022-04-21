@@ -1,6 +1,8 @@
 <template>
-  <div class="w-full h-screen pt-16 bg-white dark:bg-gray-900 overflow-hidden">
+  <div class="flex flex-col w-full h-screen pt-16 bg-white dark:bg-gray-900 overflow-hidden">
     <NavBar />
-    <slot/>
+    <div class="flex-1 overflow-auto">
+      <slot/>
+    </div>
   </div>
 </template>
