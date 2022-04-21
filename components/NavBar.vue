@@ -8,7 +8,9 @@
           </svg>
         </button>
 
-        <h1 class="dark:text-white ml-2 text-xl font-bold">{{ $t('app') }}</h1>
+        <nuxt-link class="cursor-pointer" to="/">
+          <h1 class="dark:text-white ml-2 text-xl font-bold">{{ $t('app') }}</h1>
+        </nuxt-link>
       </div>
 
       <ThemeChanger />

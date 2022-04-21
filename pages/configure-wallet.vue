@@ -1,46 +1,41 @@
 <template>
-  <div class="bg-gray-200 overflow-hidden w-full h-screen">
+  <Page>
     <div class="p-5">
-      <div class="text-3xl">
-        Configure Wallet
-      </div>
-      <div class="text-xl my-5">
-        Use the options below to import an existing wallet or create a new one.
+      <div class="text-3xl dark:text-white">
+        {{ $t('configureWallet') }}
       </div>
 
-      <div
-        class="w-full flex"
-        v-if="[2, 6].includes(activePanel)"
-      >
-        <div
-          class="w-1/2 text-center p-4 text-white bg-black"
-          :class="{ 'bg-blue-500': activeTab === 1 }"
-          @click="handleActiveTab(1)"
-        >Create new Wallet</div>
-        <div
-          class="w-1/2 text-center p-4 text-white bg-black"
-          :class="{ 'bg-blue-500': activeTab === 2 }"
-          @click="handleActiveTab(2)"
-        >Import existing wallet</div>
-      </div>
+      <div class="border-b w-full my-4"></div>
 
-      <div
-        v-if="activePanel === 2"
-      >
-        <div class="p-10 bg-white">
-          <div>
-            When you create a new wallet, a new Nano seed will be generated which can be used to create brand new accounts on the Nano network. Your Nano seed is the master key to all of your accounts and any money inside of them!
-          </div>
-          <div class="bg-red-100 text-red-500 p-4 mt-5">
-            Make sure you back up your seed, write it down, and keep it incredibly safe! There is NO way to recover it after creation, and all funds inside WILL be lost without it! You have been warned!
+      <div class="sm:flex items-stretch sm:space-y-0 sm:space-x-10 space-y-4 p-4 sm:p-10 rounded-lg bg-gray-200 dark:bg-gray-700 dark:text-white">
+        <div class="p-4 border-2 border-blue-500 rounded-lg hover:bg-blue-500 hover:text-white">
+          <div class="flex flex-col ">
+            <div class="w-20 mx-auto mb-2">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-20 h-20" fill="currentColor">
+                <!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+                <path d="M448 32C465.7 32 480 46.33 480 64C480 81.67 465.7 96 448 96H80C71.16 96 64 103.2 64 112C64 120.8 71.16 128 80 128H448C483.3 128 512 156.7 512 192V416C512 451.3 483.3 480 448 480H64C28.65 480 0 451.3 0 416V96C0 60.65 28.65 32 64 32H448zM416 336C433.7 336 448 321.7 448 304C448 286.3 433.7 272 416 272C398.3 272 384 286.3 384 304C384 321.7 398.3 336 416 336z"/>
+              </svg>
+            </div>
+            <div class="text-2xl text-left font-medium">
+              {{ $t('newWallet') }}
+            </div>
+            <div class="text-lg text-left font-thin">
+              {{ $t('generateSeedAndMnemonic') }}
+            </div>
           </div>
         </div>
-        <div class="px-10 py-4 border-t bg-white flex justify-end">
-          <div
-            @click="createNewWallet"
-            class="inline-block p-4 bg-blue-500 text-white text-center"
-          >
-            Create Wallet
+
+        <div class="p-4 border-2 border-blue-500 rounded-lg hover:bg-blue-500 hover:text-white parent">
+          <div class="flex flex-col ">
+            <div class="w-1/2 mx-auto mb-4">
+              <PassPhraseList />
+            </div>
+            <div class="text-2xl text-left font-medium">
+              {{ $t('importMnemonic') }}
+            </div>
+            <div class="text-lg text-left font-thin">
+              {{ $t('mnemonicsAvailable') }}
+            </div>
           </div>
         </div>
       </div>
@@ -210,14 +205,14 @@
         </div>
       </div>
 
-      <div 
+      <div
         v-if="[4, 5].includes(activePanel)"
         class="bg-blue-100 text-blue-500 p-4 mt-5"
       >
         <span class="font-medium">ProTip:</span>If you lose your password, you can always restore your wallet using your seed.
       </div>
     </div>
-  </div>
+  </Page>
 </template>
 
 <script>
@@ -256,7 +251,7 @@ export default {
   methods: {
     createNewWallet() {
       const wallet = nanocurrency.wallet.generateLegacy()
-      
+
       const words = wallet.mnemonic.split(' ');
 
       const lines = [
@@ -293,15 +288,15 @@ export default {
         wallet: this.wallet,
         password: this.walletPasswordModel
       })
-      
+
       this.$store.dispatch('wallet/loadCurrentWalletAccountsBalance')
-      
+
       this.activePanel = 5
     },
 
     handleActiveTab(tab) {
       this.activeTab = tab
-      
+
       if (this.activeTab === 1) {
         this.activePanel = 2
       } else if (this.activeTab === 2) {
@@ -311,7 +306,7 @@ export default {
 
     handleImportWallet() {
       let wallet
-      
+
       if (this.imporType === 'seed') {
         wallet = nanocurrency.wallet.fromLegacySeed(this.seed)
       } else if (this.imporType === 'mnemonic') {
@@ -321,9 +316,15 @@ export default {
       this.wallet = { ...wallet }
       this.$store.dispatch('wallet/setCurrentWallet', { wallet })
       this.$store.dispatch('wallet/loadCurrentWalletAccountsBalance')
-      
+
       this.activePanel = 4
     }
   }
 }
 </script>
+
+<style>
+.parent:hover .parent-hover\:border-white {
+  border-color: #fff;
+}
+</style>
