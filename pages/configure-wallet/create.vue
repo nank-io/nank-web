@@ -21,8 +21,12 @@
           placeholder="New Wallet Password"
           v-model="password"
         >
-        <div class="mx-3" :class="`transition-opacity ${password ? 'opacity-100' : 'opacity-0'}`">
+        <div :class="`mx-3 transition-opacity ${password ? 'opacity-100' : 'opacity-0'}`">
           <password v-model="password" :strength-meter-only="true" strengthMeterClass="Password__strength-meter mb-0 mt-4"/>
+        </div>
+        <div :class="`mt-2 mx-3 transition-opacity ${password ? 'opacity-100' : 'opacity-0'}`">
+          <p style="font-size: 10px" class="text-gray-300 leading-4">Short keyboard patterns are easy to guess</p>
+          <p style="font-size: 10px" class="text-gray-300 leading-4">Add another word or two. Uncommon words are better.</p>
         </div>
 
         <input
