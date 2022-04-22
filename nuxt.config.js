@@ -52,6 +52,8 @@ export default {
     '@nuxtjs/pwa',
     // https://i18n.nuxtjs.org/setup
     '@nuxtjs/i18n',
+
+    '@nuxtjs/toast',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -63,7 +65,7 @@ export default {
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     manifest: {
-      lang: 'en'
+      lang: 'pt-BR'
     }
   },
 

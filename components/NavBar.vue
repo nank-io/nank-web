@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed w-full top-0 shadow-lg bg-gray-100 dark:bg-gray-800">
+  <div class="fixed z-50 w-full top-0 shadow-lg bg-gray-100 dark:bg-gray-800">
     <div class="p-4 h-16 flex justify-between items-center sm:container sm:mx-auto">
       <div class="flex items-center">
         <button @click="onClick">

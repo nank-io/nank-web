@@ -1,7 +1,7 @@
 <template>
   <div
     :class="`
-      fixed w-full top-14 pr-10
+      fixed w-full top-14 pr-10 z-40
       transform transition-transform
       overflow-hidden
       ${menuOpened ? 'translate-x-0' : '-translate-x-full'}
@@ -34,7 +34,7 @@
       <div class="pt-4">
         <div class="p-1 bg-gray-200 dark:bg-gray-700 rounded-lg">
           <div class="p-3 dark:text-white border border-dashed border-gray-600 rounded-lg">
-            <div class="text-xl">Total Balance</div>
+            <div class="text-xl">{{ $t('totalBalance') }}</div>
             <div class="mt-4 flex items-baseline">
               <div class="w-12 text-2xl">XNO</div>
               <div class="ml-3 text-3xl font-bold">Ӿ0</div>
@@ -54,12 +54,18 @@
             Configure Wallet
           </nuxt-link>
         </div>
-        <div v-else-if="walletIsLocked" class="pt-4 bg-black text-yellow-500">
+        <div v-else-if="walletIsLocked" class="flex pt-4 text-yellow-500">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+          </svg>
           <div @click="$modal.show('unlock-wallet')">
             Unlock Wallet
           </div>
         </div>
-        <div v-else class="pt-4 bg-black text-yellow-500">
+        <div v-else class="flex pt-4 text-yellow-500">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
           <div @click="$store.dispatch('wallet/lockWallet', {
             wallet: currentWallet,
             password: currentWallet.password
@@ -86,8 +92,6 @@
           </li>
         </ul>
       </div>
-
-      <UnlockWallet />
     </div>
   </div>
 </template>
