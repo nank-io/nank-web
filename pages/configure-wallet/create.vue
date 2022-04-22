@@ -68,6 +68,8 @@ export default {
     btnDisabled() {
       return  !this.password || this.password.length < 6
     },
+  },
+  methods: {
     generateWallet() {
       const wallet = nanocurrency.wallet.generateLegacy()
 

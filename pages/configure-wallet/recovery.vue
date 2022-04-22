@@ -42,6 +42,7 @@
     </div>
     <div slot="footer">
       <button
+        @click="handleCreateWallet"
         :disabled="btnDisabled"
         :class="`px-4 py-2 w-full sm:w-auto rounded-full  text-white uppercase transition-colors ${btnDisabled ? 'bg-gray-800 text-gray-600' : 'bg-blue-500'}`"
       >{{ $t('createWallet') }}</button>
@@ -83,6 +84,9 @@ export default {
         pauseOnHover: false,
         queue: true,
       })
+    },
+    handleCreateWallet() {
+      this.$router.push({ path: '/accounts' })
     }
   }
 }
