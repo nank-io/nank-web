@@ -58,17 +58,17 @@ export default {
       check: null,
       seed: null,
       mnemonic: null,
-      newWalletMnemonicLines: []
+      wallet: {}
     }
   },
   mounted() {
     const hasWallet = localStorage.getItem('wallet')
 
     if (hasWallet) {
-      const wallet = JSON.parse(hasWallet)
+      this.wallet = JSON.parse(hasWallet)
 
-      this.seed = wallet.seed
-      this.mnemonic = wallet.mnemonic
+      this.seed = this.wallet.seed
+      this.mnemonic = this.wallet.mnemonic
     }
   },
   computed: {
@@ -86,7 +86,15 @@ export default {
       })
     },
     handleCreateWallet() {
-      this.$router.push({ path: '/accounts' })
+
+      this.$store.dispatch('wallet/lockWallet', {
+        wallet: this.wallet,
+        password: localStorage.getItem('password')
+      })
+
+      this.$store.dispatch('wallet/loadCurrentWalletAccountsBalance')
+
+      this.$router.push({ path: '/configure-wallet/created' })
     }
   }
 }

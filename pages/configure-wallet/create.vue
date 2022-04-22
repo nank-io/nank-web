@@ -36,8 +36,8 @@
           <password v-model="password" :strength-meter-only="true" strengthMeterClass="Password__strength-meter mb-0 mt-4"/>
         </div>
         <div class="mx-3 transition-opacity">
-          <p style="font-size: 10px" class="text-gray-300 leading-4">{{ $t('newWalletPasswordText1') }}</p>
-          <p style="font-size: 10px" class="text-gray-300 leading-4">{{ $t('newWalletPasswordText2') }}</p>
+          <p style="font-size: 10px" class="text-gray-600 dark:text-gray-300 leading-4">{{ $t('newWalletPasswordText1') }}</p>
+          <p style="font-size: 10px" class="text-gray-600 dark:text-gray-300 leading-4">{{ $t('newWalletPasswordText2') }}</p>
         </div>
       </div>
     </div>
