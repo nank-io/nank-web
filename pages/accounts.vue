@@ -7,12 +7,12 @@
         </div>
       </div>
 
-      <div class="mt-8 mb-4">
+      <div class="mt-8 mb-6">
         <Button :text="$t('addNewAccount')"/>
       </div>
 
-      <div class="flex sm:hidden rounded-t-lg dark:text-white bg-gray-200 dark:bg-gray-700 px-4 py-2">{{ $t('account') }}</div>
-      <div class="hidden sm:flex rounded-t-lg dark:text-white bg-gray-200 dark:bg-gray-700 px-4 py-2 border-b border-gray-500">
+      <div class="flex sm:hidden rounded-t-lg dark:text-gray-300 bg-gray-200 dark:bg-gray-700 px-4 py-2">{{ $t('account') }}</div>
+      <div class="hidden sm:flex rounded-t-lg dark:text-gray-200 bg-gray-200 dark:bg-gray-700 px-4 py-2 border-b border-gray-500">
         <div class="w-12  px-2">{{ $t('index') }}</div>
         <div class="w-1/2 px-2">{{ $t('account') }}</div>
         <div class="px-2">{{ $t('balance') }}</div>
@@ -27,9 +27,16 @@
 
       <div
         v-if="!currentWalletAccounts.length"
-        class="text-center p-5 bg-gray-100"
+        class="text-lg text-center p-4 bg-gray-100 dark:bg-gray-800 dark:text-gray-300 rounded-b-lg "
       >
-        You don't have any accounts yet, <nuxt-link class="text-blue-500 underline" to="/configure-wallet">click here to create one</nuxt-link>
+        {{ $t('accountsDontHaveText1') }}<button class="text-blue-500 underline" @click="handleCreateNewAccount">{{ $t('accountsDontHaveText2') }}</button>
+      </div>
+
+      <div
+        v-if="!currentWalletAccounts.length"
+        class="my-6 text-lg text-center p-4 bg-gray-100 dark:bg-gray-800 dark:text-gray-300 rounded-lg "
+      >
+        {{ $t('accountsMissingText1') }}<button class="text-blue-500 underline" to="/configure-wallet">{{ $t('accountsMissingText2') }}</button>{{ $t('accountsMissingText3') }}
       </div>
     </div>
   </Page>
@@ -46,6 +53,7 @@ export default {
   computed: {
     ...mapGetters({
       currentWalletAccounts: 'wallet/currentWalletAccounts',
+      walletIsConfigured: 'wallet/isConfigured',
     })
   },
   methods: {
@@ -56,6 +64,15 @@ export default {
           accounts: [],
         }
       })
+    },
+    handleCreateNewAccount() {
+      if (!this.walletIsConfigured) {
+        this.$toast.error('Wallet is not configured', {
+          duration: 1000,
+          pauseOnHover: false,
+          queue: true,
+        })
+      }
     }
   }
 }

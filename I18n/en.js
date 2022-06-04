@@ -47,6 +47,11 @@ export default {
   accountsTip1: 'Missing accounts?',
   accountsLink1: 'Add new account',
   accountsTip2: 'to import a previously used address.',
+  accountsDontHaveText1: 'You don\'t have any accounts yet, ',
+  accountsDontHaveText2: 'click here to create one',
+  accountsMissingText1: ' Missing accounts? ',
+  accountsMissingText2: ' Add new account',
+  accountsMissingText3: ' to import a previously used address.',
   index: 'Index',
   balance: 'Balance',
 }
