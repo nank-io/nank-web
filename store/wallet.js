@@ -67,10 +67,10 @@ export const actions = {
 
     commit('setCurrentWallet', wallet)
   },
-  
+
   loadCurrentWalletAccountsBalance({ commit, getters, rootGetters }) {
     getAccountsBalances(
-      rootGetters.currentServer.api,
+      rootGetters.currentProxyServer.api,
       getters.currentWalletAccounts.map(acc => acc.address).filter(Boolean)
     ).then(json => {
       let total = 0
@@ -91,7 +91,7 @@ export const actions = {
 
   loadCurrentWalletAccountsPending({ commit, dispatch, getters, rootGetters }) {
     getAccountsPending(
-      rootGetters.currentServer.api,
+      rootGetters.currentProxyServer.api,
       getters.currentWalletAccounts.map(acc => acc.address).filter(Boolean)
     ).then(pending => {
       const pendingBlocks = []
@@ -122,10 +122,10 @@ export const actions = {
       console.log(error)
     })
   },
-  
+
   loadAccountsFrontiers({ commit, getters, rootGetters }, { accounts }) {
     getAccountsFrontiers(
-      rootGetters.currentServer.api,
+      rootGetters.currentProxyServer.api,
       accounts
     ).then(json => {
       const workPool = []
@@ -148,20 +148,20 @@ export const actions = {
     }
 
     getAccountInfo(
-      rootGetters.currentServer.api,
+      rootGetters.currentProxyServer.api,
       payload.fromAccount,
     ).then(json => {
       fromAccountInfo = json
 
       getAccountInfo(
-        rootGetters.currentServer.api,
+        rootGetters.currentProxyServer.api,
         payload.toAccount,
       ).then(json => {
         toAccountInfo = json
         const secretKey = getters.currentWalletAccounts.find(acc => acc.address === payload.fromAccount).privateKey
-        
+
         doWorkGenerate(
-          rootGetters.currentServer.api,
+          rootGetters.currentProxyServer.api,
           fromAccountInfo.frontier
         ).then(json => {
           const { work } = json
@@ -177,7 +177,7 @@ export const actions = {
           }, secretKey)
 
           doSend(
-            rootGetters.currentServer.api,
+            rootGetters.currentProxyServer.api,
             sendBlock
           ).then(() => {
             dispatch('loadCurrentWalletAccountsBalance')
@@ -185,7 +185,7 @@ export const actions = {
           }).catch(error => {
             console.log(error)
           })
-        })  
+        })
       })
     })
   },
@@ -197,26 +197,26 @@ export const actions = {
     }
 
     const secretKey = getters.currentWalletAccounts.find(acc => acc.address === account).privateKey
-    
+
     getAccountInfo(
-      rootGetters.currentServer.api,
+      rootGetters.currentProxyServer.api,
       account,
     ).then(accountInfo => {
-      
+
       if (Boolean(accountInfo.error)) {
         return alert(accountInfo.error)
       }
 
       getBlocksInfo(
-        rootGetters.currentServer.api,
+        rootGetters.currentProxyServer.api,
         [sourceBlock]
       ).then(json => {
         const blockInfo = json.blocks[sourceBlock]
 
         console.log(accountInfo)
-        
+
         doWorkGenerate(
-          rootGetters.currentServer.api,
+          rootGetters.currentProxyServer.api,
           accountInfo.frontier
         ).then(({ work }) => {
           const receiveBlock = block.receive({
@@ -230,7 +230,7 @@ export const actions = {
           }, secretKey)
 
           doReceive(
-            rootGetters.currentServer.api,
+            rootGetters.currentProxyServer.api,
             receiveBlock
           ).then(() => {
             dispatch('loadCurrentWalletAccountsBalance')

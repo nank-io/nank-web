@@ -4,6 +4,7 @@ export default {
   gettingStart: 'To get started, choose an option below to configure your wallet',
 
   configureWallet: 'Configure Wallet',
+  walletIsNotConfigured: 'Wallet is not configured',
   newWallet: 'New Wallet',
   generateSeedAndMnemonic: 'Generate a seed and mnemonic',
   importMnemonic: 'Import Mnemonic',
@@ -54,4 +55,9 @@ export default {
   accountsMissingText3: ' to import a previously used address.',
   index: 'Index',
   balance: 'Balance',
+
+  settings: 'Settings',
+  selectProxyServer: 'Select proxy server',
+  clearAllData: 'Clear all data',
+  saveSettings: 'Save settings',
 }

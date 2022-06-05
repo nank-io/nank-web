@@ -19,23 +19,24 @@ const DEFAULT_SERVERS = [{
 }]
 
 export const state = () => {
-  const currentServer = JSON.parse(
-    localStorage.getItem('currentServer') ||
-    JSON.stringify(DEFAULT_SERVERS[1])
+  const currentProxyServer = JSON.parse(
+    localStorage.getItem('currentProxyServer') ||
+    JSON.stringify(DEFAULT_SERVERS[0])
   )
 
   return {
     servers: DEFAULT_SERVERS,
-    currentServer: currentServer,
+    currentProxyServer: currentProxyServer,
     menuOpened: false
   }
 }
 
 export const mutations = {
-  setCurrentServer(state, server) {
-    state.currentServer = server
+  setCurrentProxyServer(state, server) {
+    console.log('[mutations.server]', server)
+    state.currentProxyServer = server
 
-    localStorage.setItem('currentServer', JSON.stringify(server))
+    localStorage.setItem('currentProxyServer', JSON.stringify(server))
   },
   setMenuOpened(state, isOpen) {
     state.menuOpened = isOpen
@@ -43,8 +44,8 @@ export const mutations = {
 }
 
 export const actions = {
-  setCurrentServer({ commit }, server) {
-    commit('setCurrentServer', server)
+  setCurrentProxyServer({ commit }, server) {
+    commit('setCurrentProxyServer', server)
   }
 }
 
@@ -52,8 +53,8 @@ export const getters = {
   servers(state) {
     return [...state.servers]
   },
-  currentServer(state) {
-    return {...state.currentServer}
+  currentProxyServer(state) {
+    return {...state.currentProxyServer}
   },
   menuOpened(state) {
     return state.menuOpened

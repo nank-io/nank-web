@@ -1,47 +1,40 @@
 <template>
-  <div class="bg-gray-200 overflow-hidden w-full h-screen">
-    <div class="p-5">
-      <div class="flex justify-between">
-        <div class="text-3xl">
-          Configure Nank
-        </div>
-      </div>
-      
-      <div class="my-4">
-        <div class="px-10 py-4 border-b bg-white">
-          <div class="text-3xl">
-            Server Settings
-          </div>
-        </div>
-        <div class="p-10 bg-white">
-          <div
-            class="flex justify-between"
-          >
-            <label class="flex">
-              <div>Server Configuration</div>
-              <select
-                @change="handleChangeServer"
-              >
-                <option 
-                  v-for="server in servers"
-                  :key="server.id"
-                  :value="server.id"
-                >{{ server.name }}</option>
-              </select>
-            </label>
-          </div>
-        </div>
-        <div>
-          <div
-            class="inline-block p-4 bg-blue-500 text-white text-center"
-            @click="handleClearAllData"
-          >
-            Clear all data
-          </div>
-        </div>
-      </div>
+  <Page>
+    <PageTitle :title="$t('settings')"/>
+
+    <div class="flex sm:hidden rounded-t-lg dark:text-gray-300 bg-gray-200 dark:bg-gray-700 px-4 py-2">{{ $t('selectProxyServer') }}</div>
+    <div
+      class="text-lg text-center p-4 bg-gray-100 dark:bg-gray-800 dark:text-gray-300 rounded-b-lg "
+    >
+      <label class="flex flex-col items-start">
+        <select
+          @change="handleChangeServer"
+          class="px-4 py-2 rounded-lg text-black"
+        >
+          <option
+            v-for="server in proxyServers"
+            :key="server.id"
+            :value="server.id"
+            :selected="server.selected"
+          >{{ server.name }}</option>
+        </select>
+      </label>
     </div>
-  </div>
+
+    <div class="mt-8 mb-6">
+      <Button
+        @click="handleSaveSettings"
+        :text="$t('saveSettings')"
+      />
+    </div>
+
+    <div class="mt-8 mb-6">
+      <Button
+        @click="handleClearAllData"
+        :text="$t('clearAllData')"
+      />
+    </div>
+  </Page>
 </template>
 
 <script>
@@ -49,10 +42,25 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'SettingsPage',
+  data() {
+    return {
+      selectedProxyServer: null
+    }
+  },
   computed: {
     ...mapGetters({
-      servers: 'servers'
-    })
+      servers: 'servers',
+      currentProxyServer: 'currentProxyServer'
+    }),
+    proxyServers() {
+      return this.servers.map(server => {
+        server.selected = this.selectedProxyServer && this.selectedProxyServer.id === server.id
+        return server
+      })
+    }
+  },
+  mounted() {
+    this.selectedProxyServer = this.currentProxyServer
   },
   methods: {
     handleClearAllData() {
@@ -64,11 +72,23 @@ export default {
       })
     },
     handleChangeServer(event) {
-      const server = this.servers.find(
+      this.selectedProxyServer = this.servers.find(
         server => server.id == event.target.value
       )
 
-      this.$store.dispatch('setCurrentServer', server)
+      this.$store.dispatch('setCurrentProxyServer', this.selectedProxyServer)
+    },
+    handleSaveSettings() {
+      this.$store.dispatch('setCurrentProxyServer', this.selectedProxyServer)
+    },
+    isProxyServerSelected(server) {
+      if (this.selectedProxyServer) {
+        if (this.selectedProxyServer.if === server.id) {
+          return true
+        }
+      }
+
+      return false
     }
   }
 }
